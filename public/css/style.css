@@ -1,0 +1,342 @@
+/* General Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+}
+
+.error-border {
+    border: 1px solid red !important;
+}
+
+.error-message {
+    color: red;
+}
+
+.gradient-navbar {
+    background: linear-gradient(to right, #383838, #FF0000);
+}
+
+.gradient-navbar .nav-link, .gradient-navbar .navbar-brand {
+    color: white;
+}
+
+.gradient-navbar .nav-link:hover {
+    color: #ddd;
+}
+
+.bg-gradient-overlay {
+    position: relative;
+    z-index: 1;
+}
+
+.bg-gradient-overlay::after {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-image: linear-gradient(to right, #000000, #FF0000);
+    opacity: 0.85;
+}
+
+.navbar-brand {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Centering and Card Styles */
+.center-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.card {
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.card-header {
+    padding: 20px;
+    background-color: #FF0000; /* YouTube Red color */
+    color: #fff;
+    text-align: center;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.form-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+}
+
+/* Custom Button Styles */
+.btn-custom {
+    background-color: #FF0000; /* YouTube Red */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    width: 200px; /* Set a fixed width */
+    margin: 20px auto 0; /* Center the button horizontally with margin */
+}
+
+.btn-custom:hover {
+    background-color: transparent;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+    border-color: #cc0000;
+}
+
+/* Description Text */
+.description-text {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 15px;
+}
+
+/* Ensure the container is centered */
+.result-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Centering the content box */
+.center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* YouTube Shorts Video */
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Keeps it responsive */
+    aspect-ratio: 9 / 16; /* Aspect ratio for typical shorts (vertical video) */
+    background-color: #000;
+    overflow: hidden; /* Prevents the video from overflowing the container */
+}
+
+.video-container video {
+    width: 100%; /* Ensures the video takes up the full container width */
+    height: 100%; /* Ensures the video takes up the full container height */
+    object-fit: cover; /* Makes sure the video covers the container fully */
+    border-radius: 10px;
+}
+
+/* Optional: You can add a max-height to further constrain video height */
+.video-container {
+    max-height: 500px; /* Adjust this value as needed */
+}
+
+/* Community Post Image */
+.post-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Centering and styling the normal buttons inside the box */
+.center-box .btn-custom {
+    background-color: #FF0000; /* YouTube Red */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    display: inline-block; /* This ensures the button does not stretch across the full width */
+    width: auto; /* Prevent full-width styling */
+}
+
+/* Button Hover */
+.center-box .btn-custom:hover {
+    background-color: transparent;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+    border-color: #cc0000;
+}
+
+/* Optional: Styling for the "Back to Search" button */
+.center-box .btn-secondary {
+    display: inline-block; /* Ensure it stays at its normal width */
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    background-color: #6c757d; /* Default secondary button color */
+    color: white;
+    width: auto; /* Prevent full-width styling */
+}
+
+.center-box .btn-secondary:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+.description {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Additional Styles for responsiveness */
+@media screen and (max-width: 768px) {
+    .center-box {
+        padding: 15px;
+    }
+
+    .video-container, .post-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .btn-custom {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+}
+
+.about-section {
+    background-color: #fff;
+    color: #333;
+    padding: 60px 0;
+}
+.about-content {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.team-card {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.team-card-header {
+    background-color: #FF0000;
+    color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+}
+.team-card-body {
+    padding: 20px;
+    text-align: center;
+}
+.team-member-info h5 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.team-member-info p {
+    color: #555;
+    font-size: 14px;
+}
+
+.social-icons a {
+    color: #333;
+    font-size: 20px;
+    margin: 0 10px;
+    transition: all 0.3s;
+}
+.social-icons a:hover {
+    color: #7c4dff;
+}
+
+.contact-card {
+    margin-top: 50px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: #007bff;
+}
+.contact-info h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.contact-info p {
+    font-size: 18px;
+    color: #333;
+}
+.contact-info p i {
+    margin-right: 10px;
+}
+.contact-info p + p {
+    margin-top: 15px;
+}
+.contact-info .social-icons {
+    margin-top: 20px;
+}
+.contact-info .social-icons a {
+    font-size: 24px;
+    margin: 0 15px;
+    transition: all 0.3s;
+}
+.contact-info .social-icons a:hover {
+    color: #7c4dff;
+}
