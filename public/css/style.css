@@ -18,6 +18,19 @@ a {
     color: red;
 }
 
+.flash-messages-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.flash-messages {
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
 .gradient-navbar {
     background: linear-gradient(to right, #383838, #FF0000);
 }
@@ -147,6 +160,7 @@ a {
 .result-container {
     max-width: 900px;
     margin: 0 auto;
+    margin-bottom: 100px;
 }
 
 /* Centering the content box */
@@ -163,7 +177,7 @@ a {
 }
 
 /* YouTube Shorts Video */
-.video-container {
+.video-embed-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,8 +196,24 @@ a {
 }
 
 /* Optional: You can add a max-height to further constrain video height */
-.video-container {
+.video-embed-container {
     max-height: 500px; /* Adjust this value as needed */
+}
+
+#video-qualities ul {
+    list-style-type: none; /* Removes the bullet points */
+    padding: 0; /* Removes default padding */
+    margin: 0 auto; /* Centers the list horizontally */
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stacks items vertically */
+    align-items: center; /* Centers items horizontally */
+    justify-content: center; /* Optional: Centers items vertically */
+    height: 100%; /* Optional: Ensures proper vertical alignment */
+}
+
+#video-qualities ul li {
+    margin-bottom: 10px; /* Adds spacing between items */
+    font-size: 1.2rem; /* Optional: Adjusts font size */
 }
 
 /* Community Post Image */
@@ -191,6 +221,12 @@ a {
     width: 100%;
     height: auto;
     border-radius: 10px;
+}
+
+.post-caption {
+    text-align: left; /* Align caption text to the left */
+    width: 100%; /* Ensure caption spans full width of its container */
+    margin-bottom: 10px; /* Optional: Add some margin to space it out from the image */
 }
 
 /* Centering and styling the normal buttons inside the box */
@@ -256,87 +292,4 @@ a {
         font-size: 1rem;
         padding: 8px 15px;
     }
-}
-
-.about-section {
-    background-color: #fff;
-    color: #333;
-    padding: 60px 0;
-}
-.about-content {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-.team-card {
-    margin-bottom: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.team-card-header {
-    background-color: #FF0000;
-    color: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 20px;
-    text-align: center;
-}
-.team-card-body {
-    padding: 20px;
-    text-align: center;
-}
-.team-member-info h5 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-.team-member-info p {
-    color: #555;
-    font-size: 14px;
-}
-
-.social-icons a {
-    color: #333;
-    font-size: 20px;
-    margin: 0 10px;
-    transition: all 0.3s;
-}
-.social-icons a:hover {
-    color: #7c4dff;
-}
-
-.contact-card {
-    margin-top: 50px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    background-color: #007bff;
-}
-.contact-info h4 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-.contact-info p {
-    font-size: 18px;
-    color: #333;
-}
-.contact-info p i {
-    margin-right: 10px;
-}
-.contact-info p + p {
-    margin-top: 15px;
-}
-.contact-info .social-icons {
-    margin-top: 20px;
-}
-.contact-info .social-icons a {
-    font-size: 24px;
-    margin: 0 15px;
-    transition: all 0.3s;
-}
-.contact-info .social-icons a:hover {
-    color: #7c4dff;
 }
