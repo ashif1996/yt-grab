@@ -3,10 +3,22 @@ const router = express.Router();
 
 const indexControllers = require("../controllers/indexControllers");
 
+const {
+    validateYouTubeVideoSession,
+    validateYouTubeShortsSession,
+    validateCommunityPostSession,
+} = require("../middlewares/validateContentAccess");
+
 router.get("/", indexControllers.getHome);
-router.get("/yt-shorts", indexControllers.getShorts);
-router.get("/yt-community-post", indexControllers.getCommunityPost);
+
+router.post("/process-url", indexControllers.processUrl);
+
+router.get("/yt-video", validateYouTubeVideoSession, indexControllers.getVideo);
+router.get("/yt-shorts", validateYouTubeShortsSession, indexControllers.getShorts);
+
+router.get("/yt-community-post", validateCommunityPostSession, indexControllers.getCommunityPost);
+router.get("/download-community-post/", indexControllers.downloadCommunityPost);
+
 router.get("/contact", indexControllers.getContact);
-router.get("/about", indexControllers.getAbout);
 
 module.exports = router;
