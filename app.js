@@ -5,6 +5,7 @@ const path = require("path");
 const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
+const cors = require("cors");
 const expressLayouts = require("express-ejs-layouts");
 const app = express();
 
@@ -21,6 +22,15 @@ app.use(expressLayouts);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(flash());
+app.use(cors({
+    origin: "http://localhost:3000"
+}));
+
+app.use((req, res, next) => {
+    res.locals.successMessage = req.flash("success");
+    res.locals.errorMessage = req.flash("error");
+    next();
+});
 
 const indexRoutes = require("./routes/indexRoutes");
 
