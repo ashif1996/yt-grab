@@ -7,15 +7,35 @@
             </ol>
         </nav>
     </div>
+
+    <div class="flash-messages-container">
+        <% if (successMessage && successMessage.length > 0) { %>
+            <div class="flash-messages mb-4">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= successMessage %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <% } %>
+    
+        <% if (errorMessage && errorMessage.length > 0) { %>
+            <div class="flash-messages mb-4">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= errorMessage %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <% } %>
+    </div>
     
     <section class="about-section text-center">
         <div class="container">
-            <h2 style="font-weight: bolder;">About SnapURL!</h2>
+            <h2 style="font-weight: bolder;">About YTGrab</h2>
             <div class="custom-line"></div>
 
             <div class="description-box mb-5">
-                <h4 style="font-weight: bold;">What Makes SnapURL! Unique?</h4>
-                <p>At SnapURL!, we focus on giving you more than just a URL shortener. Whether you're an influencer, a business, or simply someone who shares links regularly, SnapURL! provides the tools you need to get the most out of your shared URLs. With analytics, customization, and ease of use, we are revolutionizing how URLs are shared on the web.</p>
+                <h4 style="font-weight: bold;">What Makes YTGrab Unique?</h4>
+                <p>At YTGrab, we focus on giving you more than just a URL shortener. Whether you're an influencer, a business, or simply someone who shares links regularly, SnapURL! provides the tools you need to get the most out of your shared URLs. With analytics, customization, and ease of use, we are revolutionizing how URLs are shared on the web.</p>
             </div>
     
             <div class="row">

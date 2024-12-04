@@ -18,6 +18,26 @@
         </div>
     </div>
 
+    <div class="flash-messages-container">
+        <% if (successMessage && successMessage.length > 0) { %>
+            <div class="flash-messages mb-4">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= successMessage %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <% } %>
+    
+        <% if (errorMessage && errorMessage.length > 0) { %>
+            <div class="flash-messages mb-4">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= errorMessage %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
     <div class="container mb-4">
         <div class="row info-b">
             <div class="col-12 col-md-4">
@@ -27,7 +47,7 @@
                     <h5>Phone</h5>
                     <p>+919876543210</p>
                     <h5>Email</h5>
-                    <p class="mb-0">contactSnapURL!@gmail.com</p>
+                    <p class="mb-0">contactYTGrab@gmail.com</p>
                 </div>
             </div>
             <div class="col-12 col-md-8">
@@ -60,3 +80,5 @@
         </div>
     </div>
 </div>
+
+<script src="/js/contact.js"></script>

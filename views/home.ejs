@@ -1,13 +1,33 @@
+<div class="flash-messages-container">
+    <% if (successMessage && successMessage.length > 0) { %>
+        <div class="flash-messages mb-4">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <%= successMessage %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    <% } %>
+
+    <% if (errorMessage && errorMessage.length > 0) { %>
+        <div class="flash-messages mb-4">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= errorMessage %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    <% } %>
+</div>
+
 <div class="center-wrapper">
     <div class="card">
         <div class="card-header">
             <h2 class="form-title">Download YouTube Shorts and Community Posts</h2>
         </div>
         <div class="card-body">
-            <form id="downloadForm">
+            <form id="urlForm" action="/process-url" method="post">
                 <h6 class="form-subtitle">Paste the YouTube Shorts or Community Post URL</h6>
                 <div class="form-group">
-                    <input class="form-control" name="videoUrl" id="urlInput" placeholder="Enter YouTube link here">
+                    <input class="form-control" name="url" id="urlInput" placeholder="Enter YouTube link here">
                     <span id="urlInputError" class="error-message" style="margin-left: 5px;"></span>
                 </div>
                 <button type="submit" class="btn-custom">Search</button>
@@ -16,3 +36,5 @@
         </div>
     </div>
 </div>
+
+<script src="/js/url.js"></script>

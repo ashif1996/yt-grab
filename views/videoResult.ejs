@@ -3,7 +3,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" style="color: #FF0000;"><i class="fa fa-home" style="margin-right: 5px; color: #FF0000;"></i>Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Youtube Shorts</li>
+                <li class="breadcrumb-item active" aria-current="page">Youtube Video</li>
             </ol>
         </nav>
     </div>
@@ -31,11 +31,11 @@
     <div class="result-container">
         <!-- YouTube Shorts Result -->
         <div class="center-box">
-            <h2 class="text-danger text-center">Watch YouTube Shorts</h2>
+            <h2 class="text-danger text-center">Watch YouTube video</h2>
             <div class="custom-line"></div>
     
-            <% if (shortsDetails && shortsDetails.title) { %>
-                <h3 id="video-title" class="mt-5"><%= shortsDetails.title %></h3>
+            <% if (videoDetails && videoDetails.title) { %>
+                <h3 id="video-title" class="mt-5"><%= videoDetails.title %></h3>
             <% } else { %>
                 <p>Video title is not available</p>
             <% } %>
@@ -44,7 +44,7 @@
                 <iframe
                     width="560"
                     height="315"
-                    src="https://www.youtube.com/embed/<%= shortsDetails.videoId %>"
+                    src="https://www.youtube.com/embed/<%= videoDetails.videoId %>"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
@@ -52,9 +52,9 @@
             </div>
     
             <div class="video-info text-center mb-2">
-                <p id="video-author">Author: <%= shortsDetails.author || "Not available" %><span></span></p>
-                <p id="video-length">Length: <%= shortsDetails.lengthSeconds || "Not available" %><span></span> seconds</p>
-                <p id="video-views">Views: <%= shortsDetails.viewCount || "Not available" %><span></span></p>
+                <p id="video-author">Author: <%= videoDetails.author || "Not available" %><span></span></p>
+                <p id="video-length">Length: <%= videoDetails.lengthSeconds || "Not available" %><span></span> seconds</p>
+                <p id="video-views">Views: <%= videoDetails.viewCount || "Not available" %><span></span></p>
             </div>        
             <p class="description text-center">Play your favorite YouTube Shorts. Just click the play button!</p>
         </div>
