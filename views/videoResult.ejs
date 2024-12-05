@@ -42,8 +42,6 @@
     
             <div class="video-embed-container my-4">
                 <iframe
-                    width="560"
-                    height="315"
                     src="https://www.youtube.com/embed/<%= videoDetails.videoId %>"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -55,8 +53,11 @@
                 <p id="video-author">Author: <%= videoDetails.author || "Not available" %><span></span></p>
                 <p id="video-length">Length: <%= videoDetails.lengthSeconds || "Not available" %><span></span> seconds</p>
                 <p id="video-views">Views: <%= videoDetails.viewCount || "Not available" %><span></span></p>
-            </div>        
-            <p class="description text-center">Play your favorite YouTube Shorts. Just click the play button!</p>
+            </div>
+            <div class="text-center my-4">
+                <a href="/yt-video/thumbnail?thumbnailUrl=<%= videoDetails.thumbnailUrl %>" id="fetch-thumbnail-btn" class="btn btn-custom btn-lg mt-2">Fetch Thumbnail</a>
+            </div>      
+            <p class="description text-center">Play your favorite YouTube Videos. Just click the play button!</p>
         </div>
     </div>
 </div>
