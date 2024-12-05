@@ -14,6 +14,8 @@ router.get("/", indexControllers.getHome);
 router.post("/process-url", indexControllers.processUrl);
 
 router.get("/yt-video", validateYouTubeVideoSession, indexControllers.getVideo);
+router.get("/yt-video/thumbnail", validateYouTubeVideoSession, indexControllers.getThumbnail);
+router.get("/yt-video/thumbnail/download-thumbnail", indexControllers.downloadThumbnail);
 router.get("/yt-shorts", validateYouTubeShortsSession, indexControllers.getShorts);
 
 router.get("/yt-community-post", validateCommunityPostSession, indexControllers.getCommunityPost);
