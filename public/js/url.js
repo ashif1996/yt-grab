@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clearErrors();
 
-        const isValidVideoUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(\?.*)?)$/;
-        const isValidShortsUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/shorts\/[a-zA-Z0-9_-]+(\?.*)?)$/;
-        const isValidCommunityPostUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/post\/[a-zA-Z0-9_-]+(\?.*)?)$/;
-        
+        const isValidVideoUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&[a-zA-Z0-9_=-]*)*|youtu\.be\/[a-zA-Z0-9_-]+(\?.*)?)$/;
+        const isValidShortsUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/shorts\/[a-zA-Z0-9_-]+(\?.*)?)$/i;
+        const isValidCommunityPostUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/(channel\/[a-zA-Z0-9_-]+\/community(\?.*)?)|(post\/[a-zA-Z0-9_-]+(\?.*)?))$/i;
+
         if (!isValidVideoUrl.test(urlInput) && !isValidShortsUrl.test(urlInput) && !isValidCommunityPostUrl.test(urlInput)) {
             displayErrors("urlInput", "Please provide a valid YouTube URL.");
             isValid = false;
