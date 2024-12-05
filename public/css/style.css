@@ -176,28 +176,48 @@ a {
     margin-bottom: 20px;
 }
 
-/* YouTube Shorts Video */
 .video-embed-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 400px; /* Keeps it responsive */
-    aspect-ratio: 9 / 16; /* Aspect ratio for typical shorts (vertical video) */
+    height: 500px; /* Ensures the container takes up the full height */
     background-color: #000;
-    overflow: hidden; /* Prevents the video from overflowing the container */
+    overflow: hidden;
+    position: relative;
 }
 
-.video-container video {
-    width: 100%; /* Ensures the video takes up the full container width */
-    height: 100%; /* Ensures the video takes up the full container height */
-    object-fit: cover; /* Makes sure the video covers the container fully */
+.video-embed-container iframe {
+    width: 100%; /* Ensures the iframe takes up the full container width */
+    height: 100%; /* Ensures the iframe takes up the full container height */
+    object-fit: cover; /* Ensures the video covers the container fully without any empty space */
     border-radius: 10px;
 }
 
-/* Optional: You can add a max-height to further constrain video height */
-.video-embed-container {
-    max-height: 500px; /* Adjust this value as needed */
+/* For YouTube Shorts - vertical (9:16 aspect ratio) */
+.shorts-embed-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:38%;
+    height: 100%; /* Ensures the container takes up full height */
+    aspect-ratio: 9 / 16; /* Aspect ratio for vertical shorts */
+    background-color: #000;
+    overflow: hidden;
+    position: relative;
+}
+
+.shorts-embed-container iframe {
+    width: 100%; /* Ensures the iframe takes up the full container width */
+    height: 100%; /* Ensures the iframe takes up the full container height */
+    object-fit: cover; /* Ensures the video covers the container fully without any empty space */
+    border-radius: 10px;
+}
+
+/* Optional: Max height for both videos to prevent them from growing too large */
+.video-embed-container,
+.shorts-embed-container {
+    max-height: 80vh; /* Limits video height to 80% of viewport height */
 }
 
 #video-qualities ul {
@@ -227,6 +247,20 @@ a {
     text-align: left; /* Align caption text to the left */
     width: 100%; /* Ensure caption spans full width of its container */
     margin-bottom: 10px; /* Optional: Add some margin to space it out from the image */
+}
+
+.thumbnail-container {
+    width: 100%;
+    height: 480px; /* Fixed height for the container */
+    border-radius: 10px;
+    overflow: hidden; /* Ensures the image doesn't overflow the rounded corners */
+}
+
+.thumbnail-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the container without leaving any empty space */
+    border-radius: 10px; /* Matches the container's border-radius */
 }
 
 /* Centering and styling the normal buttons inside the box */
