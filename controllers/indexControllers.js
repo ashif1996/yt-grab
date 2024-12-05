@@ -4,6 +4,7 @@ const ytdl = require("ytdl-core");
 const axios = require("axios");
 const httpStatusCodes = require("../utils/httpStatusCodes");
 const fetchCommunityPostDetails = require("../utils/communityPostUtils");
+const sendMail =require("../utils/emailUtils");
 
 const getHome = (req, res) => {
     const locals = { title: "Home | YTGrab" };
@@ -14,30 +15,36 @@ const getHome = (req, res) => {
 };
 
 const processYouTubeVideo = async (url, sessionKey, req, res, redirectUrl, successMessage) => {
-    const isValidUrl = ytdl.validateURL(url);
-    if (!isValidUrl) {
-        req.flash("error", "Please enter a valid YouTube URL.");
-        return res.redirect(httpStatusCodes.BAD_REQUEST, "/");
+    try {
+        const isValidUrl = ytdl.validateURL(url);
+        if (!isValidUrl) {
+            req.flash("error", "Please enter a valid YouTube URL.");
+            return res.redirect("/");
+        }
+
+        const info = await ytdl.getBasicInfo(url);
+        const videoId = ytdl.getVideoID(url);
+        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+        const videoDetails = {
+            videoId,
+            title: info.videoDetails.title,
+            author: info.videoDetails.author.name,
+            lengthSeconds: info.videoDetails.lengthSeconds,
+            viewCount: info.videoDetails.viewCount,
+            thumbnailUrl,
+        };
+
+        req.session[sessionKey] = videoDetails;
+
+        req.flash("success", successMessage);
+        return res.redirect(redirectUrl);
+    } catch (error) {
+        console.error("Error fetching video details:", error);
+
+        req.flash("error", "Failed to retrieve video information. Please try again later.");
+        return res.redirect("/");
     }
-
-    const info = await ytdl.getInfo(url);
-    const videoId = info.videoDetails.videoId;
-
-    const bestQualityFormat = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
-
-    const videoDetails = {
-        videoId,
-        title: info.videoDetails.title,
-        author: info.videoDetails.author.name,
-        lengthSeconds: info.videoDetails.lengthSeconds,
-        viewCount: info.videoDetails.viewCount,
-        quality: bestQualityFormat,
-    };
-
-    req.session[sessionKey] = videoDetails;
-
-    req.flash("success", successMessage);
-    return res.redirect(redirectUrl);
 };
 
 const processUrl = async (req, res) => {
@@ -83,7 +90,7 @@ const processUrl = async (req, res) => {
         console.error("Error occurred while processing URL:", error);
 
         req.flash("error", "Failed to retrieve information. Please try again later.");
-        return res.redirect(httpStatusCodes.INTERNAL_SERVER_ERROR, "/");
+        return res.redirect("/");
     }
 };
 
@@ -109,6 +116,68 @@ const getShorts = (req, res) => {
     });
 };
 
+const getThumbnail = (req, res) => {
+    const locals = { title: "Thumbnails | YTGrab" };
+    const thumbnailUrl = req.session.videoDetails.thumbnailUrl;
+
+    return res.status(httpStatusCodes.OK).render("thumbnailResult", {
+        locals,
+        thumbnailUrl,
+        layout: "layouts/mainLayout",
+    });
+};
+
+const downloadThumbnail = async (req, res) => {
+    const { thumbnailUrl } = req.query;
+
+    try {
+        if (!thumbnailUrl) {
+            req.flash("error", "Thumbnail URL is missing.");
+            return res.redirect("/yt-video/thumbnail");
+        }
+
+        const response = await axios({
+            url: thumbnailUrl,
+            method: "GET",
+            responseType: "stream",
+        });
+
+        const downloadDir = path.join(__dirname, "..", "downloads", "thumbnail");
+        if (!fs.existsSync(downloadDir)) {
+            fs.mkdirSync(downloadDir);
+        }
+
+        const fileExtension = path.extname(thumbnailUrl) || ".jpg";
+        const filename = `thumbnail${fileExtension}`;
+        const filePath = path.join(__dirname, "..", "downloads", "thumbnail", filename);
+
+        const writer = fs.createWriteStream(filePath);
+        response.data.pipe(writer);
+
+        writer.on("finish", () => {
+            console.log("File successfully downloaded.");
+            res.download(filePath, filename, (err) => {
+                if (err) {
+                    console.error("Error sending file:", err);
+                }
+                fs.unlinkSync(filePath);
+            });
+        });
+
+        writer.on("error", () => {
+            console.error("Error writing file:", err);
+
+            req.flash("error", "Error downloading thumbnail. Please try again later.");
+            return res.redirect("/yt-video/thumbnail");
+        });
+    } catch (error) {
+        console.error("Error downloading thumbnail:", error);
+
+        req.flash("error", "Error downloading thumbnail. Please try again later.");
+        return res.redirect("/yt-video/thumbnail");
+    }
+};
+
 const getCommunityPost = (req, res) => {
     const locals = { title: "Community Post | YTGrab" };
     const communityPostDetails = req.session.communityPostDetails;
@@ -125,7 +194,7 @@ const downloadCommunityPost = async (req, res) => {
 
     if (!imageUrl) {
         req.flash("error", "Image URL is missing.");
-        return res.redirect(httpStatusCodes.BAD_REQUEST, "/yt-community-post");
+        return res.redirect("/yt-community-post");
     }
 
     try {
@@ -135,14 +204,14 @@ const downloadCommunityPost = async (req, res) => {
             responseType: "stream",
         });
 
-        const downloadFolder = path.join(__dirname, "..", "downloads");
-        if (!fs.existsSync(downloadFolder)) {
-            fs.mkdirSync(downloadFolder);
+        const downloadDir = path.join(__dirname, "..", "downloads", "community");
+        if (!fs.existsSync(downloadDir)) {
+            fs.mkdirSync(downloadDir);
         }
 
         const fileExtension = path.extname(imageUrl) || ".jpg";
         const filename = `community-post-image${fileExtension}`
-        const filePath = path.join(__dirname, "..", "downloads", filename);
+        const filePath = path.join(__dirname, "..", "downloads","community", filename);
 
         // Write the image to the file system
         const writer = fs.createWriteStream(filePath);
@@ -168,7 +237,7 @@ const downloadCommunityPost = async (req, res) => {
         console.error("Error downloading image:", error);
 
         req.flash("error", "Error downloading image. Please try again later.");
-        return res.redirect(httpStatusCodes.INTERNAL_SERVER_ERROR, "/yt-community-post");
+        return res.redirect("/yt-community-post");
     }
 };
 
@@ -180,12 +249,35 @@ const getContact = (req, res) => {
     });
 };
 
+const processSendMail = async (req, res) => {
+    const { name, email, message } = req.body;
+
+    try {
+        await sendMail(name, email, message);
+
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: "Email sent successfully.",
+        });
+    } catch (error) {
+        console.error("Failed to send email:", error);
+
+        return res.status(httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: 'Failed to send email.',
+        });
+    }
+};
+
 module.exports = {
     getHome,
     processUrl,
     getVideo,
     getShorts,
+    getThumbnail,
+    downloadThumbnail,
     getCommunityPost,
     downloadCommunityPost,
     getContact,
+    processSendMail,
 };
