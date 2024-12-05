@@ -19,8 +19,9 @@ router.get("/yt-video/thumbnail/download-thumbnail", indexControllers.downloadTh
 router.get("/yt-shorts", validateYouTubeShortsSession, indexControllers.getShorts);
 
 router.get("/yt-community-post", validateCommunityPostSession, indexControllers.getCommunityPost);
-router.get("/download-community-post/", indexControllers.downloadCommunityPost);
+router.get("/yt-community-post/download-community-post/", indexControllers.downloadCommunityPost);
 
 router.get("/contact", indexControllers.getContact);
+router.post("/contact/send-email", indexControllers.processSendMail);
 
 module.exports = router;
