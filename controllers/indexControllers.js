@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const ytdl = require("ytdl-core");
 const axios = require("axios");
+
+const showFlashMessages = require("../utils/messageUtils");
 const httpStatusCodes = require("../utils/httpStatusCodes");
 const fetchCommunityPostDetails = require("../utils/communityPostUtils");
 const sendMail =require("../utils/emailUtils");
@@ -14,15 +16,45 @@ const getHome = (req, res) => {
     });
 };
 
-const processYouTubeVideo = async (url, sessionKey, req, res, redirectUrl, successMessage) => {
+const processYouTubeVideo = async (
+    req,
+    res,
+    url,
+    sessionKey,
+    redirectUrl,
+    successMessage,
+) => {
     try {
         const isValidUrl = ytdl.validateURL(url);
         if (!isValidUrl) {
-            req.flash("error", "Please enter a valid YouTube URL.");
-            return res.redirect("/");
+            return showFlashMessages({
+                req,
+                res,
+                type: "error",
+                message: "Please enter a valid YouTube URL.",
+                status: httpStatusCodes.BAD_REQUEST,
+                redirectUrl: "/",
+            });
         }
 
-        const info = await ytdl.getBasicInfo(url);
+        let info;
+        try {
+            info = await ytdl.getBasicInfo(url);
+        } catch (error) {
+            if (error.statusCode === 410) {
+                return showFlashMessages({
+                    req,
+                    res,
+                    type: "error",
+                    message: "The requested video is no longer available.",
+                    status: httpStatusCodes.GONE,
+                    redirectUrl: "/",
+                });
+            }
+
+            throw error;
+        }
+
         const videoId = ytdl.getVideoID(url);
         const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
@@ -37,13 +69,24 @@ const processYouTubeVideo = async (url, sessionKey, req, res, redirectUrl, succe
 
         req.session[sessionKey] = videoDetails;
 
-        req.flash("success", successMessage);
-        return res.redirect(redirectUrl);
+        return showFlashMessages({
+            req,
+            res,
+            type: "success",
+            message: successMessage,
+            status: httpStatusCodes.OK,
+            redirectUrl: redirectUrl,
+        });
     } catch (error) {
         console.error("Error fetching video details:", error);
-
-        req.flash("error", "Failed to retrieve video information. Please try again later.");
-        return res.redirect("/");
+        return showFlashMessages({
+            req,
+            res,
+            type: "error",
+            message: "Failed to retrieve video information. Please try again later.",
+            status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+            redirectUrl: "/",
+        });
     }
 };
 
@@ -51,9 +94,9 @@ const processUrl = async (req, res) => {
     const { url } = req.body;
 
     try {
-        const isValidVideoUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(\?.*)?)$/;
-        const isValidShortsUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/shorts\/[a-zA-Z0-9_-]+(\?.*)?)$/;
-        const isValidCommunityPostUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/post\/[a-zA-Z0-9_-]+(\?.*)?)$/;
+        const isValidVideoUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&[a-zA-Z0-9_=-]*)*|youtu\.be\/[a-zA-Z0-9_-]+(\?.*)?)$/;
+        const isValidShortsUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/shorts\/[a-zA-Z0-9_-]+(\?.*)?)$/i;
+        const isValidCommunityPostUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/(channel\/[a-zA-Z0-9_-]+\/community(\?.*)?)|(post\/[a-zA-Z0-9_-]+(\?.*)?))$/i;
 
         let urlType;
 
@@ -69,28 +112,59 @@ const processUrl = async (req, res) => {
 
         switch (urlType) {
             case "video":
-                return await processYouTubeVideo(url, "videoDetails", req, res, "/yt-video", "YouTube video retrieved successfully.");
+                return await processYouTubeVideo(
+                    req,
+                    res,
+                    url,
+                    "videoDetails",
+                    "/yt-video",
+                    "YouTube video retrieved successfully.",
+                );
 
             case "shorts":
-                return await processYouTubeVideo(url, "shortsDetails", req, res, "/yt-shorts", "YouTube Shorts retrieved successfully.");
+                return await processYouTubeVideo(
+                    req,
+                    res,
+                    url,
+                    "shortsDetails",
+                    "/yt-shorts",
+                    "YouTube Shorts retrieved successfully.",
+                );
 
             case "community":
                 const communityPostDetails = await fetchCommunityPostDetails(url);
                 req.session.communityPostDetails = communityPostDetails;
 
-                req.flash("success", "Community Post retrieved successfully.");
-                return res.redirect("/yt-community-post");
+                return showFlashMessages({
+                    req,
+                    res,
+                    type: "success",
+                    message: "Community Post retrieved successfully.",
+                    status: httpStatusCodes.OK,
+                    redirectUrl: "/yt-community-post",
+                });
 
             case "invalid":
             default:
-                req.flash("error", "Please enter a valid YouTube Shorts, Video, or Community Post URL.");
-                return res.redirect("/");
+                return showFlashMessages({
+                    req,
+                    res,
+                    type: "error",
+                    message: "Please enter a valid YouTube Shorts, Video, or Community Post URL.",
+                    status: httpStatusCodes.BAD_REQUEST,
+                    redirectUrl: "/",
+                });
         }
     } catch (error) {
         console.error("Error occurred while processing URL:", error);
-
-        req.flash("error", "Failed to retrieve information. Please try again later.");
-        return res.redirect("/");
+        return showFlashMessages({
+            req,
+            res,
+            type: "error",
+            message: "Failed to retrieve information. Please try again later.",
+            status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+            redirectUrl: "/",
+        });
     }
 };
 
@@ -123,6 +197,7 @@ const getThumbnail = (req, res) => {
     return res.status(httpStatusCodes.OK).render("thumbnailResult", {
         locals,
         thumbnailUrl,
+        successMessage: "Thumbnail retrieved successfully.",
         layout: "layouts/mainLayout",
     });
 };
@@ -132,8 +207,14 @@ const downloadThumbnail = async (req, res) => {
 
     try {
         if (!thumbnailUrl) {
-            req.flash("error", "Thumbnail URL is missing.");
-            return res.redirect("/yt-video/thumbnail");
+            return showFlashMessages({
+                req,
+                res,
+                type: "error",
+                message: "Thumbnail URL is missing.",
+                status: httpStatusCodes.NOT_FOUND,
+                redirectUrl: "/yt-video/thumbnail",
+            });
         }
 
         const response = await axios({
@@ -166,15 +247,25 @@ const downloadThumbnail = async (req, res) => {
 
         writer.on("error", () => {
             console.error("Error writing file:", err);
-
-            req.flash("error", "Error downloading thumbnail. Please try again later.");
-            return res.redirect("/yt-video/thumbnail");
+            return showFlashMessages({
+                req,
+                res,
+                type: "error",
+                message: "Error downloading thumbnail. Please try again later.",
+                status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+                redirectUrl: "/yt-video/thumbnail",
+            });
         });
     } catch (error) {
         console.error("Error downloading thumbnail:", error);
-
-        req.flash("error", "Error downloading thumbnail. Please try again later.");
-        return res.redirect("/yt-video/thumbnail");
+        return showFlashMessages({
+            req,
+            res,
+            type: "error",
+            message: "Error downloading thumbnail. Please try again later.",
+            status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+            redirectUrl: "/yt-video/thumbnail",
+        });
     }
 };
 
@@ -193,8 +284,14 @@ const downloadCommunityPost = async (req, res) => {
     const { imageUrl } = req.query;
 
     if (!imageUrl) {
-        req.flash("error", "Image URL is missing.");
-        return res.redirect("/yt-community-post");
+        return showFlashMessages({
+            req,
+            res,
+            type: "error",
+            message: "Image URL is missing.",
+            status: httpStatusCodes.NOT_FOUND,
+            redirectUrl: "/yt-community-post",
+        });
     }
 
     try {
@@ -229,15 +326,25 @@ const downloadCommunityPost = async (req, res) => {
 
         writer.on("error", (err) => {
             console.error("Error writing file:", err);
-
-            req.flash("error", "Error downloading image. Please try again later.");
-            return res.redirect("/yt-community-post");
+            return showFlashMessages({
+                req,
+                res,
+                type: "error",
+                message: "Error downloading image. Please try again later.",
+                status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+                redirectUrl: "/yt-community-post",
+            });
         });
     } catch (error) {
         console.error("Error downloading image:", error);
-
-        req.flash("error", "Error downloading image. Please try again later.");
-        return res.redirect("/yt-community-post");
+        return showFlashMessages({
+            req,
+            res,
+            type: "error",
+            message: "Error downloading image. Please try again later.",
+            status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+            redirectUrl: "/yt-community-post",
+        });
     }
 };
 
@@ -255,16 +362,24 @@ const processSendMail = async (req, res) => {
     try {
         await sendMail(name, email, message);
 
-        return res.status(httpStatusCodes.OK).json({
-            success: true,
+        return showFlashMessages({
+            req,
+            res,
+            type: "success",
             message: "Email sent successfully.",
+            status: httpStatusCodes.OK,
+            isJson: true,
+            success: true,
         });
     } catch (error) {
         console.error("Failed to send email:", error);
-
-        return res.status(httpStatusCodes.INTERNAL_SERVER_ERROR).json({
-            success: false,
-            message: 'Failed to send email.',
+        return showFlashMessages({
+            req,
+            res,
+            type: "error",
+            message: "Failed to send email.",
+            status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+            isJson: true,
         });
     }
 };
