@@ -16,14 +16,14 @@ const getHome = (req, res) => {
     });
 };
 
-const processYouTubeVideo = async (
+const processYouTubeVideo = async ({
     req,
     res,
     url,
     sessionKey,
     redirectUrl,
     successMessage,
-) => {
+}) => {
     try {
         const isValidUrl = ytdl.validateURL(url);
         if (!isValidUrl) {
@@ -113,26 +113,26 @@ const processUrl = async (req, res) => {
 
         switch (urlType) {
             case "video":
-                const processedYouTubeVideo = await processYouTubeVideo(
+                const processedYouTubeVideo = await processYouTubeVideo({
                     req,
                     res,
                     url,
-                    "videoDetails",
-                    "/yt-video",
-                    "YouTube video retrieved successfully.",
-                );
+                    sessionKey: "videoDetails",
+                    redirectUrl: "/yt-video",
+                    successMessage: "YouTube video retrieved successfully.",
+                });
 
                 return processedYouTubeVideo;
 
             case "shorts":
-                const processedYouTubeShorts = await processYouTubeVideo(
+                const processedYouTubeShorts = await processYouTubeVideo({
                     req,
                     res,
                     url,
-                    "shortsDetails",
-                    "/yt-shorts",
-                    "YouTube Shorts retrieved successfully.",
-                );
+                    sessionKey: "shortsDetails",
+                    redirectUrl: "/yt-shorts",
+                    successMessage: "YouTube Shorts retrieved successfully.",
+                });
 
                 return processedYouTubeShorts;
 
