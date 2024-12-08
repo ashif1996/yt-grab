@@ -38,6 +38,7 @@ const processYouTubeVideo = async (
         }
 
         let info;
+
         try {
             info = await ytdl.getBasicInfo(url);
         } catch (error) {
@@ -47,7 +48,7 @@ const processYouTubeVideo = async (
                     res,
                     type: "error",
                     message: "The requested video is no longer available.",
-                    status: httpStatusCodes.GONE,
+                    status: httpStatusCodes.NOT_FOUND,
                     redirectUrl: "/",
                 });
             }
@@ -112,7 +113,7 @@ const processUrl = async (req, res) => {
 
         switch (urlType) {
             case "video":
-                return await processYouTubeVideo(
+                const processedYouTubeVideo = await processYouTubeVideo(
                     req,
                     res,
                     url,
@@ -121,8 +122,10 @@ const processUrl = async (req, res) => {
                     "YouTube video retrieved successfully.",
                 );
 
+                return processedYouTubeVideo;
+
             case "shorts":
-                return await processYouTubeVideo(
+                const processedYouTubeShorts = await processYouTubeVideo(
                     req,
                     res,
                     url,
@@ -130,6 +133,8 @@ const processUrl = async (req, res) => {
                     "/yt-shorts",
                     "YouTube Shorts retrieved successfully.",
                 );
+
+                return processedYouTubeShorts;
 
             case "community":
                 const communityPostDetails = await fetchCommunityPostDetails(url);
