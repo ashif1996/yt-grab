@@ -72,6 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!messageContent.value.trim()) {
             displayErrors('messageContent', 'Message is required.');
             isValid = false;
+        } else if (messageContent.value.length < 15) {
+            displayErrors('messageContent', 'Message should be atleast 15 characters long.');
+            isValid = false;
         }
 
         return isValid;
