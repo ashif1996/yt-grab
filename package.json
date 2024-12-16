@@ -2,7 +2,8 @@
   "name": "yt-grab",
   "version": "1.0.0",
   "description": "A Node.js web app to download YouTube Shorts and Community Posts with ease.",
-  "main": "index.js",
+  "type": "module",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js"
