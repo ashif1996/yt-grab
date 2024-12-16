@@ -1,4 +1,4 @@
-const httpStatusCodes = require("../utils/httpStatusCodes");
+import httpStatusCodes from "../utils/httpStatusCodes.js";
 
 const validateYouTubeVideoSession = (req, res, next) => {
     if (!req.session.videoDetails) {
@@ -45,7 +45,7 @@ const validateCommunityPostSession = (req, res, next) => {
     next();
 };
 
-module.exports = {
+export {
     validateYouTubeVideoSession,
     validateYouTubeShortsSession,
     validateCommunityPostSession,

@@ -1,4 +1,4 @@
-const transporter = require("../config/emailConfig");
+import transporter from "../config/emailConfig.js";
 
 const sendMail = async (name, email, message) => {
     const mailOptions = {
@@ -34,4 +34,4 @@ YTGrab Notification System
     }
 };
 
-module.exports = sendMail;
+export default sendMail;

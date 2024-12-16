@@ -17,4 +17,4 @@ const showFlashMessages = ({
     return res.status(status).redirect(redirectUrl);
 };
 
-module.exports = showFlashMessages;
+export default showFlashMessages;

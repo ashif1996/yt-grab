@@ -1,13 +1,13 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const indexControllers = require("../controllers/indexControllers");
+import indexControllers from "../controllers/indexControllers.js";
 
-const {
-    validateYouTubeVideoSession,
-    validateYouTubeShortsSession,
-    validateCommunityPostSession,
-} = require("../middlewares/validateContentAccess");
+import { 
+    validateYouTubeVideoSession, 
+    validateYouTubeShortsSession, 
+    validateCommunityPostSession 
+} from "../middlewares/validateContentAccess.js";
 
 router.get("/", indexControllers.getHome);
 
@@ -24,4 +24,4 @@ router.get("/yt-community-post/download-community-post/", validateCommunityPostS
 router.get("/contact", indexControllers.getContact);
 router.post("/contact/send-email", indexControllers.processSendMail);
 
-module.exports = router;
+export default router;

@@ -1,12 +1,12 @@
-const fs = require("fs");
-const path = require("path");
-const ytdl = require("ytdl-core");
-const axios = require("axios");
+import fs from "fs";
+import path from "path";
+import ytdl from "ytdl-core";
+import axios from "axios";
 
-const showFlashMessages = require("../utils/messageUtils");
-const httpStatusCodes = require("../utils/httpStatusCodes");
-const fetchCommunityPostDetails = require("../utils/communityPostUtils");
-const sendMail =require("../utils/emailUtils");
+import showFlashMessages from "../utils/messageUtils.js";
+import httpStatusCodes from "../utils/httpStatusCodes.js";
+import fetchCommunityPostDetails from "../utils/communityPostUtils.js";
+import sendMail from "../utils/emailUtils.js";
 
 const getHome = (req, res) => {
     const locals = { title: "Home | YTGrab" };
@@ -96,6 +96,7 @@ const processUrl = async (req, res) => {
 
     try {
         const isValidVideoUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&[a-zA-Z0-9_=-]*)*|youtu\.be\/[a-zA-Z0-9_-]+(\?.*)?)$/;
+
         const isValidShortsUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/shorts\/[a-zA-Z0-9_-]+(\?.*)?)$/i;
         const isValidCommunityPostUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/(channel\/[a-zA-Z0-9_-]+\/community(\?.*)?)|(post\/[a-zA-Z0-9_-]+(\?.*)?))$/i;
 
@@ -389,7 +390,7 @@ const processSendMail = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getHome,
     processUrl,
     getVideo,

@@ -1,4 +1,4 @@
-const puppeteer = require("puppeteer");
+import puppeteer from "puppeteer";
 
 const fetchCommunityPostDetails = async (url) => {
     try {
@@ -44,4 +44,4 @@ const fetchCommunityPostDetails = async (url) => {
     }
 };
 
-module.exports = fetchCommunityPostDetails;
+export default fetchCommunityPostDetails;
