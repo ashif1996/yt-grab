@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import ytdl from "ytdl-core";
 import axios from "axios";
 
@@ -223,6 +224,7 @@ const downloadThumbnail = async (req, res) => {
             responseType: "stream",
         });
 
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
         const downloadDir = path.join(__dirname, "..", "downloads", "thumbnail");
         if (!fs.existsSync(downloadDir)) {
             fs.mkdirSync(downloadDir);
@@ -299,6 +301,7 @@ const downloadCommunityPost = async (req, res) => {
             responseType: "stream",
         });
 
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
         const downloadDir = path.join(__dirname, "..", "downloads", "community");
         if (!fs.existsSync(downloadDir)) {
             fs.mkdirSync(downloadDir);
