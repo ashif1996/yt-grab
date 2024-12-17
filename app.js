@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+dotenv.config();
+
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -6,9 +8,6 @@ import session from "express-session";
 import flash from "connect-flash";
 import cors from "cors";
 import expressLayouts from "express-ejs-layouts";
-
-// Initialize dotenv
-dotenv.config();
 
 const app = express();
 
