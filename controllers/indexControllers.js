@@ -30,7 +30,6 @@ const processYouTubeVideo = async ({
             return showFlashMessages({
                 req,
                 res,
-                type: "error",
                 message: "Please enter a valid YouTube URL.",
                 status: httpStatusCodes.BAD_REQUEST,
                 redirectUrl: "/",
@@ -46,7 +45,6 @@ const processYouTubeVideo = async ({
                 return showFlashMessages({
                     req,
                     res,
-                    type: "error",
                     message: "The requested video is no longer available.",
                     status: httpStatusCodes.NOT_FOUND,
                     redirectUrl: "/",
@@ -83,7 +81,6 @@ const processYouTubeVideo = async ({
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Failed to retrieve video information. Please try again later.",
             status: httpStatusCodes.INTERNAL_SERVER_ERROR,
             redirectUrl: "/",
@@ -155,7 +152,6 @@ const processUrl = async (req, res) => {
                 return showFlashMessages({
                     req,
                     res,
-                    type: "error",
                     message: "Please enter a valid YouTube Shorts, Video, or Community Post URL.",
                     status: httpStatusCodes.BAD_REQUEST,
                     redirectUrl: "/",
@@ -166,7 +162,6 @@ const processUrl = async (req, res) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Failed to retrieve information. Please try again later.",
             status: httpStatusCodes.INTERNAL_SERVER_ERROR,
             redirectUrl: "/",
@@ -216,7 +211,6 @@ const downloadThumbnail = async (req, res) => {
             return showFlashMessages({
                 req,
                 res,
-                type: "error",
                 message: "Thumbnail URL is missing.",
                 status: httpStatusCodes.NOT_FOUND,
                 redirectUrl: "/yt-video/thumbnail",
@@ -247,6 +241,7 @@ const downloadThumbnail = async (req, res) => {
                 if (err) {
                     console.error("Error sending file:", err);
                 }
+
                 fs.unlinkSync(filePath);
             });
         });
@@ -256,7 +251,6 @@ const downloadThumbnail = async (req, res) => {
             return showFlashMessages({
                 req,
                 res,
-                type: "error",
                 message: "Error downloading thumbnail. Please try again later.",
                 status: httpStatusCodes.INTERNAL_SERVER_ERROR,
                 redirectUrl: "/yt-video/thumbnail",
@@ -267,7 +261,6 @@ const downloadThumbnail = async (req, res) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Error downloading thumbnail. Please try again later.",
             status: httpStatusCodes.INTERNAL_SERVER_ERROR,
             redirectUrl: "/yt-video/thumbnail",
@@ -293,7 +286,6 @@ const downloadCommunityPost = async (req, res) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Image URL is missing.",
             status: httpStatusCodes.NOT_FOUND,
             redirectUrl: "/yt-community-post",
@@ -326,6 +318,7 @@ const downloadCommunityPost = async (req, res) => {
                 if (err) {
                     console.error("Error sending file:", err);
                 }
+
                 fs.unlinkSync(filePath); // Clean up after download
             });
         });
@@ -335,7 +328,6 @@ const downloadCommunityPost = async (req, res) => {
             return showFlashMessages({
                 req,
                 res,
-                type: "error",
                 message: "Error downloading image. Please try again later.",
                 status: httpStatusCodes.INTERNAL_SERVER_ERROR,
                 redirectUrl: "/yt-community-post",
@@ -346,7 +338,6 @@ const downloadCommunityPost = async (req, res) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Error downloading image. Please try again later.",
             status: httpStatusCodes.INTERNAL_SERVER_ERROR,
             redirectUrl: "/yt-community-post",
@@ -382,7 +373,6 @@ const processSendMail = async (req, res) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Failed to send email.",
             status: httpStatusCodes.INTERNAL_SERVER_ERROR,
             isJson: true,
