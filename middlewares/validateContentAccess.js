@@ -5,7 +5,6 @@ const validateYouTubeVideoSession = (req, res, next) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Invalid access. Please enter a valid YouTube video URL.",
             status: httpStatusCodes.BAD_REQUEST,
             redirectUrl: "/",
@@ -20,7 +19,6 @@ const validateYouTubeShortsSession = (req, res, next) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Invalid access. Please enter a valid YouTube Shorts URL.",
             status: httpStatusCodes.BAD_REQUEST,
             redirectUrl: "/",
@@ -35,7 +33,6 @@ const validateCommunityPostSession = (req, res, next) => {
         return showFlashMessages({
             req,
             res,
-            type: "error",
             message: "Invalid access. Please enter a valid Community Post URL.",
             status: httpStatusCodes.BAD_REQUEST,
             redirectUrl: "/",
