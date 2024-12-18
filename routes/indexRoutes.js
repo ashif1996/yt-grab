@@ -6,7 +6,7 @@ import indexControllers from "../controllers/indexControllers.js";
 import { 
     validateYouTubeVideoSession, 
     validateYouTubeShortsSession, 
-    validateCommunityPostSession 
+    validateCommunityPostSession,
 } from "../middlewares/validateContentAccess.js";
 
 router.get("/", indexControllers.getHome);

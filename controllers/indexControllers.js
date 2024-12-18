@@ -42,6 +42,8 @@ const processYouTubeVideo = async ({
         try {
             info = await ytdl.getBasicInfo(url);
         } catch (error) {
+            console.log("Error fetching information:", error);
+
             if (error.statusCode === 410) {
                 return showFlashMessages({
                     req,
@@ -51,8 +53,6 @@ const processYouTubeVideo = async ({
                     redirectUrl: "/",
                 });
             }
-
-            throw error;
         }
 
         const videoId = ytdl.getVideoID(url);
@@ -79,6 +79,7 @@ const processYouTubeVideo = async ({
         });
     } catch (error) {
         console.error("Error fetching video details:", error);
+
         return showFlashMessages({
             req,
             res,
@@ -94,7 +95,6 @@ const processUrl = async (req, res) => {
 
     try {
         const isValidVideoUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&[a-zA-Z0-9_=-]*)*|youtu\.be\/[a-zA-Z0-9_-]+(\?.*)?)$/;
-
         const isValidShortsUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/shorts\/[a-zA-Z0-9_-]+(\?.*)?)$/i;
         const isValidCommunityPostUrl = /^(https?:\/\/)?(www\.)?(youtube\.com\/(channel\/[a-zA-Z0-9_-]+\/community(\?.*)?)|(post\/[a-zA-Z0-9_-]+(\?.*)?))$/i;
 
@@ -160,6 +160,7 @@ const processUrl = async (req, res) => {
         }
     } catch (error) {
         console.error("Error occurred while processing URL:", error);
+
         return showFlashMessages({
             req,
             res,
@@ -239,17 +240,18 @@ const downloadThumbnail = async (req, res) => {
 
         writer.on("finish", () => {
             console.log("File successfully downloaded.");
+
             res.download(filePath, filename, (err) => {
                 if (err) {
                     console.error("Error sending file:", err);
                 }
-
-                fs.unlinkSync(filePath);
+                fs.unlinkSync(filePath);  // Clean up after download
             });
         });
 
         writer.on("error", () => {
             console.error("Error writing file:", err);
+
             return showFlashMessages({
                 req,
                 res,
@@ -260,6 +262,7 @@ const downloadThumbnail = async (req, res) => {
         });
     } catch (error) {
         console.error("Error downloading thumbnail:", error);
+
         return showFlashMessages({
             req,
             res,
@@ -317,17 +320,18 @@ const downloadCommunityPost = async (req, res) => {
 
         writer.on("finish", () => {
             console.log("File successfully downloaded.");
+
             res.download(filePath, filename, (err) => {
                 if (err) {
                     console.error("Error sending file:", err);
                 }
-
                 fs.unlinkSync(filePath); // Clean up after download
             });
         });
 
         writer.on("error", (err) => {
             console.error("Error writing file:", err);
+
             return showFlashMessages({
                 req,
                 res,
@@ -338,6 +342,7 @@ const downloadCommunityPost = async (req, res) => {
         });
     } catch (error) {
         console.error("Error downloading image:", error);
+
         return showFlashMessages({
             req,
             res,
@@ -373,6 +378,7 @@ const processSendMail = async (req, res) => {
         });
     } catch (error) {
         console.error("Failed to send email:", error);
+        
         return showFlashMessages({
             req,
             res,

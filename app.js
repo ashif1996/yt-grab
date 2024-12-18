@@ -30,7 +30,7 @@ app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.use(flash());
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
 }));
 
 app.use((req, res, next) => {
@@ -63,3 +63,5 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+export default app;
