@@ -1,7 +1,7 @@
 {
   "name": "yt-grab",
   "version": "1.0.0",
-  "description": "A Node.js web app to download YouTube Shorts and Community Posts with ease.",
+  "description": "A Node.js mini-project using Express.js and MongoDB to fetch and download YouTube thumbnails and community posts with ease.",
   "type": "module",
   "main": "app.js",
   "scripts": {
