@@ -1,6 +1,6 @@
 # YT-Grab  
 
-**YT-Grab** is a Node.js application powered by **Express.js** and **MongoDB** that allows users to effortlessly fetch and download YouTube thumbnails and community posts. Its responsive design and seamless functionality make it a handy tool for content creators, researchers, and enthusiasts.  
+**YT-Grab** is a Node.js application powered by **Express.js** and **MongoDB** that allows users to effortlessly fetch and download YouTube thumbnails and community posts. Its responsive design and seamless functionality make it a handy tool for content creators.  
 
 ## 🚀 Features  
 
